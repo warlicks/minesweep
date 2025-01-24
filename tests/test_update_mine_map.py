@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-from minesweep import update_mine_map
+from practice import update_mine_map
 
 '''comparing storage (map) to expected storage (expected map) '''
 
