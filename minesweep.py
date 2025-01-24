@@ -22,7 +22,11 @@ def update_mine_map(storage: np.ndarray, row: int, column: int) -> np.ndarray:
         storage[(row - 1), (column - 1)] += 1
     if row - 1 >= 0 and storage[(row - 1), column] != -999:
         storage[(row - 1), column] += 1
-    if row - 1 >= 0 and column + 1 < storage.shape[1] and storage[(row - 1), (column + 1)] != -999:
+    if (
+        row - 1 >= 0
+        and column + 1 < storage.shape[1]
+        and storage[(row - 1), (column + 1)] != -999
+    ):
         storage[(row - 1), (column + 1)] += 1
 
     # Handle updates to the current row.
@@ -35,14 +39,23 @@ def update_mine_map(storage: np.ndarray, row: int, column: int) -> np.ndarray:
     storage[row, column] = -999
 
     # Handle updates to the row below.
-    if row + 1 < storage.shape[0] and column - 1 >= 0 and storage[row + 1, column - 1] != -999:
+    if (
+        row + 1 < storage.shape[0]
+        and column - 1 >= 0
+        and storage[row + 1, column - 1] != -999
+    ):
         storage[row + 1, column - 1] += 1
     if row + 1 < storage.shape[0] and storage[row + 1, column] != -999:
         storage[row + 1, column] += 1
-    if row + 1 < storage.shape[0] and column + 1 < storage.shape[1] and storage[row + 1, column + 1] != -999:
+    if (
+        row + 1 < storage.shape[0]
+        and column + 1 < storage.shape[1]
+        and storage[row + 1, column + 1] != -999
+    ):
         storage[row + 1, column + 1] += 1
 
     return storage
+
 
 def mine_locations(current_data: str) -> list:
     """Find the position of mines in a row of the mine field
@@ -136,7 +149,7 @@ def prepare_string_output(field_index: int, field_counter: np.ndarray) -> str:
 if __name__ == "__main__":
     # Open the file.
     # TODO: Put this all within a context manager?
-    mine_map = open("mines.txt", "r")
+    mine_map = open("minesweeper_input.txt", "r")
     field_index = 1
     # Find the dimensions of the current mine field.
     field_rows, field_cols = extract_field_dimensions(mine_map)

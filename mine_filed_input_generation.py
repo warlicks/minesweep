@@ -15,6 +15,10 @@ a period. Locations with a mine should be indicated with an *. The functions sho
 return the generated string.
 """
 
+"""Can you adjust the code so that at the start of each mine field it lists the 
+dimensions on a single line. The dimensions values should be seperated by a space.
+"""
+
 
 def generate_minefield(rows, cols, mine_density):
     """
@@ -49,17 +53,25 @@ def generate_minefield(rows, cols, mine_density):
         minefield[row][col] = "*"
 
     # Convert the minefield to a string representation
-    minefield_str = ""
+    minefield_str = f"{rows} {cols}\n"  # Add dimensions at the beginning
     for row in minefield:
         minefield_str += "".join(row) + "\n"
 
     return minefield_str
 
 
-# Example usage:
-rows = 5
-cols = 10
-mine_density = 0.2  # 20% mine density
+# Manually added
+with open("minesweeper_input.txt", mode="a") as f:
+    f.write(generate_minefield(1, 1, 0))
 
-minefield_str = generate_minefield(rows, cols, mine_density)
-print(minefield_str)
+    f.write(generate_minefield(1, 1, 1))
+    f.write(generate_minefield(100, 1, 0))
+    f.write(generate_minefield(100, 1, 1))
+    f.write(generate_minefield(100, 1, 0.5))
+    f.write(generate_minefield(1, 100, 0))
+    f.write(generate_minefield(1, 100, 1))
+    f.write(generate_minefield(1, 100, 0.75))
+    f.write(generate_minefield(4, 4, 0.2))
+    f.write(generate_minefield(100, 100, 1))
+    f.write(generate_minefield(100, 100, 0))
+    f.write("0 0")
