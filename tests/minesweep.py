@@ -2,60 +2,47 @@ import numpy as np
 
 
 def update_mine_map(storage: np.ndarray, row: int, column: int) -> np.ndarray:
-    """Updates the mine field map to when new mines are found.
+    """Updates the mine field map when a new mine is found.
 
-    When a mine is found in a row, the counters for all the adjacent positions need to
-    be updated. This way we know how many mines are adjacent to any given empty position.
-    For example 3 indicates that there are mines in 3 locations adjacent to the current
-    position.
-
-    There can be a maximum of 8 positions adjacent to a given mine. See the diagram below
-    for an illustration of this fact.
-
-    UL UC UR   1 1 1
-    CL *  CR   1 * 1
-    LL LC LR   1 1 1
+    This function updates the mine field map by incrementing the adjacent cells
+    of the given mine cell. The adjacent cells that are not mines will have their
+    values incremented by 1. The mine cell itself is set to -999.
 
     Args:
-        storage (np.ndarray): A numpy array representing a "map" of the mine field. The
-          array has the same dimensions as the mine field. The values in the array are
-          a count of adjacent positions with a mine.
-          row (int): The row position of a mine
-          column (int): The column position of the mine.
+        storage (np.ndarray): A 2D numpy array representing the mine field grid.
+        row (int): The row index where the new mine is placed.
+        column (int): The column index where the new mine is placed.
 
     Returns:
-        np.array: The values in the array indicate the number of mines adjacent to a
-          given position. The location of the mines are indicated by negative values.
+        np.ndarray: The updated mine field grid with the new mine placed, and adjacent cells' mine counts updated.
     """
 
     # Handle updates to the upper row.
-    if row - 1 >= 0 and column - 1 >= 0:
+    if row - 1 >= 0 and column - 1 >= 0 and storage[(row - 1), (column - 1)] != -999:
         storage[(row - 1), (column - 1)] += 1
-    if row - 1 >= 0:
+    if row - 1 >= 0 and storage[(row - 1), column] != -999:
         storage[(row - 1), column] += 1
-    if row - 1 >= 0 and column + 1 < storage.shape[1]:
+    if row - 1 >= 0 and column + 1 < storage.shape[1] and storage[(row - 1), (column + 1)] != -999:
         storage[(row - 1), (column + 1)] += 1
 
-    # Handle Updates to the current row.
-    if column - 1 >= 0:
+    # Handle updates to the current row.
+    if column - 1 >= 0 and storage[row, column - 1] != -999:
         storage[row, column - 1] += 1
-    if column + 1 < storage.shape[1]:
+    if column + 1 < storage.shape[1] and storage[row, column + 1] != -999:
         storage[row, column + 1] += 1
 
-    # Indicate mine position with a negative number. Even if adjacent mines impact the count
-    # we can still identify which spots have mines
+    # Indicate mine position with a negative number
     storage[row, column] = -999
 
     # Handle updates to the row below.
-    if row + 1 < storage.shape[0] and column - 1 >= 0:
+    if row + 1 < storage.shape[0] and column - 1 >= 0 and storage[row + 1, column - 1] != -999:
         storage[row + 1, column - 1] += 1
-    if row + 1 < storage.shape[0]:
+    if row + 1 < storage.shape[0] and storage[row + 1, column] != -999:
         storage[row + 1, column] += 1
-    if row + 1 < storage.shape[0] and column + 1 < storage.shape[1]:
+    if row + 1 < storage.shape[0] and column + 1 < storage.shape[1] and storage[row + 1, column + 1] != -999:
         storage[row + 1, column + 1] += 1
 
     return storage
-
 
 def mine_locations(current_data: str) -> list:
     """Find the position of mines in a row of the mine field
